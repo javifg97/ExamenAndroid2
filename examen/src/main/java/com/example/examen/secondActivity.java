@@ -42,12 +42,14 @@ class secondActivityEvents implements FireBaseAdminListener{
     @Override
     public void firebaseAdmin_ramaDescargada(String rama, DataSnapshot dataSnapshot) {
         if(rama.equals("noticias")){
+            //Organizamos los datos en forma de ArrayList de noticias
             GenericTypeIndicator<ArrayList<FBNoticia>> indicator=new GenericTypeIndicator<ArrayList<FBNoticia>>(){};
             ArrayList<FBNoticia> noticias=dataSnapshot.getValue(indicator);
 
+            //Creamos el adapter y le pasamos los datos descargados
 
-            //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
             ListaNoticiasAdapter listaNoticiasAdapter=new ListaNoticiasAdapter(noticias, secondActivity);
+            //seteamos al RecyclerView el adapter que acabamos de crear y rrellenado de datos
             secondActivity.listaFragmennoticias.recyclerView.setAdapter(listaNoticiasAdapter);
         }
 
