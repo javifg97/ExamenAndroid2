@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "243028750510",
+    "firebase_url": "https://tutorialandroid-83ecd.firebaseio.com",
+    "project_id": "tutorialandroid-83ecd",
+    "storage_bucket": "tutorialandroid-83ecd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243028750510:android:b8943ce3c2374e19",
+        "android_client_info": {
+          "package_name": "com.example.guille.apptutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243028750510-2tumcm5fb96o76k8t21nd49k3ltbfrum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVNtRi0btP7VuyWQdMVP06v9-ToeN8F9k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
