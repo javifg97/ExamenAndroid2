@@ -2,9 +2,16 @@ package com.example.examen;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.examen.Adapters.ListaNoticiasAdapter;
+import com.example.examen.FBObjects.FBNoticia;
 import com.example.milib.ListaFragment;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class secondActivity extends AppCompatActivity {
 
@@ -20,6 +27,8 @@ public class secondActivity extends AppCompatActivity {
 
         DataHolder.instance.fireBaseAdmin.setListener(events);
 
+        DataHolder.instance.fireBaseAdmin.descargarYObservarRama("noticias");
+
 
     }
 }
@@ -32,6 +41,16 @@ class secondActivityEvents implements FireBaseAdminListener{
     //En este metodo recibimos los datos que hemos descargado de la rama siendo null si ha habido algun problema
     @Override
     public void firebaseAdmin_ramaDescargada(String rama, DataSnapshot dataSnapshot) {
+        if(rama.equals("noticias")){
+            GenericTypeIndicator<ArrayList<FBNoticia>> indicator=new GenericTypeIndicator<ArrayList<FBNoticia>>(){};
+            ArrayList<FBNoticia> noticias=dataSnapshot.getValue(indicator);
+
+
+            //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
+            ListaNoticiasAdapter listaNoticiasAdapter=new ListaNoticiasAdapter(noticias, secondActivity);
+            secondActivity.listaFragmennoticias.recyclerView.setAdapter(listaNoticiasAdapter);
+        }
+
 
     }
 

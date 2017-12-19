@@ -28,14 +28,14 @@ public class ListaNoticiasAdapter extends RecyclerView.Adapter<NoticiaViewHolder
         this.noticias=noticias;
         this.mContexto = mContexto;
     }
-
+    //Inflamos la celda modelo y asignamos que ViewHolder tiene este RecycleView
     @Override
     public NoticiaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.celda_noticia_layout,null);
         NoticiaViewHolder noticiaViewHolder= new NoticiaViewHolder(view);
         return noticiaViewHolder;
     }
-
+    //Rellenamos cada elemento de la celda tipo con lo descargado
     @Override
     public void onBindViewHolder(NoticiaViewHolder holder, int position) {
         holder.tvNombre.setText(noticias.get(position).Nombre);
@@ -44,7 +44,7 @@ public class ListaNoticiasAdapter extends RecyclerView.Adapter<NoticiaViewHolder
 
 
     }
-
+        //el numero de celdas se ajusta al tamaño de lo descargado
     @Override
     public int getItemCount() {
         return noticias.size();
