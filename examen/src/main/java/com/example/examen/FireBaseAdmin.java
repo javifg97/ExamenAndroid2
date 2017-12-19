@@ -9,21 +9,32 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by javier.fernandez3 on 19/12/2017.
  */
 
 public class FireBaseAdmin {
+
     private FirebaseAuth mAuth;
+
+    FirebaseDatabase database;
+    DatabaseReference myRefRaiz;
 
     public FireBaseAdminListener listener;
     public FirebaseUser user;
 
     public FireBaseAdmin(){
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        myRefRaiz=database.getReference();
     }
 
     public void setListener(FireBaseAdminListener listener){
@@ -75,6 +86,27 @@ public class FireBaseAdmin {
                         // ...
                     }
                 });
+    }
+    public void descargarYObservarRama(final String rama){
+        //Partimos desde la raiz de nuestra base de datos y vamos a la en refRama ponemos la referencia de la rama que queremos EJ: myRefRaiz + "/noticias"
+        DatabaseReference  refRama = myRefRaiz.child(rama);
+        refRama.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                listener.firebaseAdmin_ramaDescargada(rama,dataSnapshot );
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                listener.firebaseAdmin_ramaDescargada(rama,  null);
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
 }

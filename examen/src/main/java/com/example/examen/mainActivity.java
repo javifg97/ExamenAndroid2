@@ -10,6 +10,7 @@ import com.example.milib.LoginFragment;
 import com.example.milib.LoginFragmentListener;
 import com.example.milib.RegisterFragment;
 import com.example.milib.RegisterFragmentListener;
+import com.google.firebase.database.DataSnapshot;
 
 public class mainActivity extends AppCompatActivity {
 
@@ -103,5 +104,10 @@ class MainActivityEvents implements LoginFragmentListener, RegisterFragmentListe
         }else{
             Log.v("LoginError","Mal el login"+blOk);
         }
+    }
+
+    @Override
+    public void firebaseAdmin_ramaDescargada(String rama, DataSnapshot dataSnapshot) {
+
     }
 }
