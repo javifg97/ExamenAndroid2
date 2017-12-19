@@ -31,6 +31,7 @@ public class mainActivity extends AppCompatActivity {
         //Les indicamos quien va a administrar sus eventos y los va a escuchar
         loginFragment.setListener(mainActivityEvents);
         registerFragment.setListener(mainActivityEvents);
+        DataHolder.instance.fireBaseAdmin.setListener(mainActivityEvents);
 
 
         //En la transaction ponemos cual queremos que salga primero(la que se muestra)
@@ -81,7 +82,7 @@ class MainActivityEvents implements LoginFragmentListener, RegisterFragmentListe
     @Override
     public void firebaseAdmin_registerOk(boolean blOk) {
         if(blOk){
-            //iniciamos el second activity
+            //iniciamos el second activity y cerramos el main
             Intent intent= new Intent(mainActivity,secondActivity.class);
             mainActivity.startActivity(intent);
             mainActivity.finish();
@@ -94,7 +95,7 @@ class MainActivityEvents implements LoginFragmentListener, RegisterFragmentListe
     @Override
     public void firebaseAdmin_loginOk(boolean blOk) {
         if(blOk){
-            //iniciamos el second activity
+            //iniciamos el second activity y cerramos el main
             Intent intent= new Intent(mainActivity,secondActivity.class);
             mainActivity.startActivity(intent);
             mainActivity.finish();
