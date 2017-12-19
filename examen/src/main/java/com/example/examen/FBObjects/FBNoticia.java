@@ -5,15 +5,15 @@ package com.example.examen.FBObjects;
  */
 
 public class FBNoticia {
-    public String Noticia;
+    public String Nombre;
     public String notUrl;
 
     public FBNoticia(){
 
     }
 
-    public FBNoticia(String Noticia,String notUrl){
-        this.Noticia = Noticia;
+    public FBNoticia(String Nombre,String notUrl){
+        this.Nombre = Nombre;
         this.notUrl= notUrl;
     }
 }
