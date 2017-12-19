@@ -5,4 +5,12 @@ package com.example.examen;
  */
 
 public class DataHolder {
+    public static DataHolder instance = new DataHolder();
+
+    //Creamos una referencia a firebaseadmin para poder utilizarlo en cualquier clase de nuestro modulo
+    public FireBaseAdmin fireBaseAdmin;
+
+    public DataHolder(){
+        fireBaseAdmin=new FireBaseAdmin();
+    }
 }

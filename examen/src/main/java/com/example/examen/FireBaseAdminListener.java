@@ -5,4 +5,6 @@ package com.example.examen;
  */
 
 public interface FireBaseAdminListener {
+    public void firebaseAdmin_registerOk(boolean blOk);
+    public void firebaseAdmin_loginOk(boolean blOk);
 }
