@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
@@ -27,8 +28,8 @@ import java.util.Map;
 
      ListaFragment /*listaFragmentMensajes,*/ listaFragmentCoches;
      SupportMapFragment mapFragment;
-     ArrayList<FBCoche> coches;
-     GoogleMap mMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,8 @@ import java.util.Map;
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMapa);
 
         //PASAMOS POR PARAMETRO EL NOMBRE DE LA RAMA QUE QUIERAS EN LA BASE DE DATOS DE FIREBASE
-        DataHolder.instance.fireBaseAdmin.descargarYObservarRama("mensajes");
-        DataHolder.instance.fireBaseAdmin.descargarYObservarRama("Coches");
+        //DataHolder.instance.fireBaseAdmin.descargarYObservarRama("mensajes");
+
 
         Log.v("SecondActivity","--------EMAAAIL: "+DataHolder.instance.fireBaseAdmin.user.getEmail());
 
@@ -61,10 +62,11 @@ import java.util.Map;
 }
 
 
-class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback {
+class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
      SecondActivity secondActivity;
     GoogleMap mMap;
+    ArrayList<FBCoche> coches;
 
      public SecondActivityEvents(SecondActivity secondActivity){
          this.secondActivity=secondActivity;
@@ -99,27 +101,72 @@ class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback 
         secondActivity.listaFragmentMensajes.recyclerView.setAdapter(listaMensajesAdapter);*/
 
         }else if(rama.equals("Coches")){
-
+            quitarPines();
             GenericTypeIndicator<ArrayList<FBCoche>> indicator=new GenericTypeIndicator<ArrayList<FBCoche>>(){};
-            secondActivity.coches=dataSnapshot.getValue(indicator);
+            coches=dataSnapshot.getValue(indicator);
             //VALUES NO ES UN ARRAY LIST ES UN COLLECTIONS
-            Log.v("coches","COCHES CONTIENE: "+secondActivity.coches);
+            Log.v("coches","COCHES CONTIENE: "+coches);
 
             //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
-            ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(secondActivity.coches);
+            ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(coches);
             secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);
+
+            agregarPinesCoches();
         }
 
+
+    }
+
+    public void quitarPines(){
+         if(coches != null){
+             //Log.v("coches1234","Entro en borrar");
+             for(int i = 0; i<coches.size();i++) {
+                 FBCoche cocheTemp = coches.get(i);
+               //  Log.v("coches1234","Antes del if");
+                 if(cocheTemp.getMarker()!=null){
+                 //    Log.v("coches1234","No es el if");
+                     cocheTemp.getMarker().remove();
+                 }
+             }
+         }
+    }
+    public void agregarPinesCoches(){
+
+         for(int i = 0; i<coches.size();i++){
+             FBCoche cocheTemp = coches.get(i);
+
+             LatLng PosTemp = new LatLng(cocheTemp.lat, cocheTemp.lon);
+             MarkerOptions markerOptions = new MarkerOptions();
+             markerOptions.position(PosTemp);
+             markerOptions.title(cocheTemp.Nombre);
+             if(mMap!=null){
+                 Marker marker = mMap.addMarker(markerOptions);
+                 marker.setTag(cocheTemp);
+                 cocheTemp.setMarker(marker);
+                 if (i==0){
+                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PosTemp, 7));
+                 }
+             }
+         }
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        /*LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+
+        DataHolder.instance.fireBaseAdmin.descargarYObservarRama("Coches");
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        FBCoche coche= (FBCoche) marker.getTag();
+        Log.v("EYO","Pin "+ coche.Nombre);
+        return false;
     }
 }
