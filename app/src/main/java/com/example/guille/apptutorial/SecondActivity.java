@@ -18,7 +18,7 @@ import java.util.Map;
 
  public class SecondActivity extends AppCompatActivity {
 
-     ListaFragment listaFragmentMensajes, listaFragmentCoches;
+     ListaFragment listaFragmentMensajes/*, listaFragmentCoches*/;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ import java.util.Map;
         DataHolder.instance.fireBaseAdmin.setListener(events);
 
         listaFragmentMensajes =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListMensajes);
-        listaFragmentCoches =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListCoches);
+        //listaFragmentCoches =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListCoches);
 
         //PASAMOS POR PARAMETRO EL NOMBRE DE LA RAMA QUE QUIERAS EN LA BASE DE DATOS DE FIREBASE
         DataHolder.instance.fireBaseAdmin.descargarYObservarRama("mensajes");
@@ -86,14 +86,14 @@ class SecondActivityEvents implements FireBaseAdminListener{
 
         }else if(rama.equals("Coches")){
 
-            GenericTypeIndicator<ArrayList<FBCoche>> indicator=new GenericTypeIndicator<ArrayList<FBCoche>>(){};
+            /*GenericTypeIndicator<ArrayList<FBCoche>> indicator=new GenericTypeIndicator<ArrayList<FBCoche>>(){};
             ArrayList<FBCoche> coches=dataSnapshot.getValue(indicator);
             //VALUES NO ES UN ARRAY LIST ES UN COLLECTIONS
             Log.v("coches","COCHES CONTIENE: "+coches);
 
             //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
             ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(coches);
-            secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);
+            secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);*/
         }
 
 
