@@ -1,5 +1,6 @@
  package com.example.guille.apptutorial;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,12 @@ import com.example.guille.apptutorial.Adapters.ListaMensajesAdapter;
 import com.example.guille.apptutorial.FBObjects.FBCoche;
 import com.example.guille.apptutorial.FBObjects.Mensaje;
 import com.example.milib.ListaFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -18,7 +25,10 @@ import java.util.Map;
 
  public class SecondActivity extends AppCompatActivity {
 
-     ListaFragment listaFragmentMensajes/*, listaFragmentCoches*/;
+     ListaFragment /*listaFragmentMensajes,*/ listaFragmentCoches;
+     SupportMapFragment mapFragment;
+     ArrayList<FBCoche> coches;
+     GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +38,10 @@ import java.util.Map;
         SecondActivityEvents events=new SecondActivityEvents(this);
         DataHolder.instance.fireBaseAdmin.setListener(events);
 
-        listaFragmentMensajes =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListMensajes);
-        //listaFragmentCoches =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListCoches);
+        //listaFragmentMensajes =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListMensajes);
+        listaFragmentCoches =(ListaFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentListCoches);
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMapa);
 
         //PASAMOS POR PARAMETRO EL NOMBRE DE LA RAMA QUE QUIERAS EN LA BASE DE DATOS DE FIREBASE
         DataHolder.instance.fireBaseAdmin.descargarYObservarRama("mensajes");
@@ -37,20 +49,22 @@ import java.util.Map;
 
         Log.v("SecondActivity","--------EMAAAIL: "+DataHolder.instance.fireBaseAdmin.user.getEmail());
 
+        mapFragment.getMapAsync(events);
 
-      /*  ArrayList<String> mdatos= new ArrayList<>();
-        mdatos.add("MENSAJE1");
-        mdatos.add("MENSAJE2");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        ListaMensajesAdapter listaMensajesAdapter = new ListaMensajesAdapter(mdatos);
-        listaFragment.recyclerView.setAdapter(listaMensajesAdapter); */
+        //PARA QUE NOS SALGA PRIMERO EL LOGIN
+        transaction.hide(listaFragmentCoches);
+        transaction.show(mapFragment);
+        transaction.commit();
     }
 }
 
 
-class SecondActivityEvents implements FireBaseAdminListener{
+class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback {
 
      SecondActivity secondActivity;
+    GoogleMap mMap;
 
      public SecondActivityEvents(SecondActivity secondActivity){
          this.secondActivity=secondActivity;
@@ -71,7 +85,7 @@ class SecondActivityEvents implements FireBaseAdminListener{
         Log.v("RAMA",rama+"--------RAMA DESCARGADA............"+dataSnapshot);
 
         if(rama.equals("mensajes")){
-
+/*
             //FIREBASE COGE EL VALOR Y LO INTENTA METER EN EL OBJETO mensaje
             //Mensaje mensaje=dataSnapshot.getValue(Mensaje.class);
 
@@ -82,20 +96,30 @@ class SecondActivityEvents implements FireBaseAdminListener{
 
         //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
         ListaMensajesAdapter listaMensajesAdapter=new ListaMensajesAdapter(new ArrayList<Mensaje>(msg.values()));
-        secondActivity.listaFragmentMensajes.recyclerView.setAdapter(listaMensajesAdapter);
+        secondActivity.listaFragmentMensajes.recyclerView.setAdapter(listaMensajesAdapter);*/
 
         }else if(rama.equals("Coches")){
 
-            /*GenericTypeIndicator<ArrayList<FBCoche>> indicator=new GenericTypeIndicator<ArrayList<FBCoche>>(){};
-            ArrayList<FBCoche> coches=dataSnapshot.getValue(indicator);
+            GenericTypeIndicator<ArrayList<FBCoche>> indicator=new GenericTypeIndicator<ArrayList<FBCoche>>(){};
+            secondActivity.coches=dataSnapshot.getValue(indicator);
             //VALUES NO ES UN ARRAY LIST ES UN COLLECTIONS
-            Log.v("coches","COCHES CONTIENE: "+coches);
+            Log.v("coches","COCHES CONTIENE: "+secondActivity.coches);
 
             //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
-            ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(coches);
-            secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);*/
+            ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(secondActivity.coches);
+            secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);
         }
 
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
