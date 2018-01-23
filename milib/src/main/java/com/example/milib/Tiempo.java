@@ -17,8 +17,8 @@ import android.widget.TextView;
  */
 public class Tiempo extends Fragment {
 
-    EditText lat, lon, tiempo;
-    Button btn;
+    public EditText lat, lon, tiempo;
+    Button btn, btnLista;
     TiempoEvents events;
     TiempoListener listener;
 
@@ -41,8 +41,11 @@ public class Tiempo extends Fragment {
         lon = v.findViewById(R.id.lblLon);
         tiempo = v.findViewById(R.id.lblTiempo);
         btn = v.findViewById(R.id.btnTiempo);
+        btnLista = v.findViewById(R.id.btnLista);
 
         events = new TiempoEvents(this);
+        btn.setOnClickListener(events);
+        btnLista.setOnClickListener(events);
 
         return v;
     }
@@ -53,6 +56,7 @@ class TiempoEvents implements View.OnClickListener {
     Tiempo tiempo;
 
     public TiempoEvents(Tiempo tiempo) {
+
         this.tiempo = tiempo;
     }
 
@@ -61,6 +65,8 @@ class TiempoEvents implements View.OnClickListener {
         if (v.getId() == this.tiempo.btn.getId()) {
             this.tiempo.listener.ponerTiempo();
 
+        } else if(v.getId() == this.tiempo.btnLista.getId()){
+            this.tiempo.listener.Lista();
         }
     }
 }

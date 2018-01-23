@@ -6,5 +6,6 @@ package com.example.milib;
 
 public interface TiempoListener {
     public void ponerTiempo();
+    public void Lista();
 
 }

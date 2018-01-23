@@ -13,19 +13,19 @@ import java.net.URL;
  * Created by javier.fernandez3 on 23/01/2018.
  */
 
-public class HttpJsonAsyncTask extends AsyncTask<String,Integer,String> {
+public class HttpJsonAsyncTaskLista extends AsyncTask<String,Integer,String> {
 
     public static  final String REQUEST_METHOD = "GET";
     public static final  int READ_TIMEOUT = 15000;
     public static final  int CONNECTION_TIMEOUT = 15000;
 
-    public HttpJsonListener listener;
+    public HttpJsonListenerLista listener;
 
-    public HttpJsonAsyncTask(){
+    public HttpJsonAsyncTaskLista(){
 
     }
 
-    public void setListener(HttpJsonListener listener) {
+    public void setListener(HttpJsonListenerLista listener) {
         this.listener = listener;
     }
 
@@ -84,7 +84,7 @@ public class HttpJsonAsyncTask extends AsyncTask<String,Integer,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (listener != null){
-            listener.respuesta(s);
+            listener.respuestaLista(s);
         }
 
     }

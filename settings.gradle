@@ -1,1 +1,1 @@
-include ':app', ':milib', ':examen', ':activida5'
+include ':app', ':milib', ':activida5'
