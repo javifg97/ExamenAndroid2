@@ -10,6 +10,7 @@ import com.example.guille.apptutorial.Adapters.ListaMensajesAdapter;
 import com.example.guille.apptutorial.FBObjects.FBCoche;
 import com.example.guille.apptutorial.FBObjects.Mensaje;
 import com.example.milib.ListaFragment;
+import com.example.milib.asynctasks.HttpAsyncTask;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,6 +59,9 @@ import java.util.Map;
         transaction.hide(listaFragmentCoches);
         transaction.show(mapFragment);
         transaction.commit();
+
+        HttpAsyncTask httpAsyncTask =new HttpAsyncTask();
+        httpAsyncTask.execute("https://www.planwallpaper.com/static/images/general-night-golden-gate-bridge-hd-wallpapers-golden-gate-bridge-wallpaper.jpg");
     }
 }
 
