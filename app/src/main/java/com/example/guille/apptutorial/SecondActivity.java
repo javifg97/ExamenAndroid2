@@ -11,6 +11,7 @@ import com.example.guille.apptutorial.FBObjects.FBCoche;
 import com.example.guille.apptutorial.FBObjects.Mensaje;
 import com.example.milib.ListaFragment;
 import com.example.milib.asynctasks.HttpAsyncTask;
+import com.example.milib.asynctasks.HttpJsonAsyncTask;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,8 +61,15 @@ import java.util.Map;
         transaction.show(mapFragment);
         transaction.commit();
 
-        HttpAsyncTask httpAsyncTask =new HttpAsyncTask();
-        httpAsyncTask.execute("https://www.planwallpaper.com/static/images/general-night-golden-gate-bridge-hd-wallpapers-golden-gate-bridge-wallpaper.jpg");
+        /*HttpAsyncTask httpAsyncTask =new HttpAsyncTask();
+        httpAsyncTask.execute("https://www.planwallpaper.com/static/images/general-night-golden-gate-bridge-hd-wallpapers-golden-gate-bridge-wallpaper.jpg",
+                "https://www.planwallpaper.com/static/images/general-night-golden-gate-bridge-hd-wallpapers-golden-gate-bridge-wallpaper.jpg",
+                "https://i.imgur.com/FsXaGSg.jpg",
+                "https://i.imgur.com/FsXaGSg.jpg",
+                "https://www.planwallpaper.com/static/images/general-night-golden-gate-bridge-hd-wallpapers-golden-gate-bridge-wallpaper.jpg");*/
+
+        /*HttpJsonAsyncTask httpJsonAsyncTask = new HttpJsonAsyncTask();
+        httpJsonAsyncTask.execute("http://10.0.2.2/Javi/GOT/leePersonajes.php");*/
     }
 }
 
