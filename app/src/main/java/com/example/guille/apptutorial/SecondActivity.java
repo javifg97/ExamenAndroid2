@@ -9,6 +9,8 @@ import com.example.guille.apptutorial.Adapters.ListaCochesAdapter;
 import com.example.guille.apptutorial.Adapters.ListaMensajesAdapter;
 import com.example.guille.apptutorial.FBObjects.FBCoche;
 import com.example.guille.apptutorial.FBObjects.Mensaje;
+import com.example.guille.apptutorial.sqlLiteAdmin.Cochesql;
+import com.example.guille.apptutorial.sqlLiteAdmin.DatabaseHandler;
 import com.example.milib.ListaFragment;
 import com.example.milib.asynctasks.HttpAsyncTask;
 import com.example.milib.asynctasks.HttpJsonAsyncTask;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -30,6 +33,7 @@ import java.util.Map;
 
      ListaFragment /*listaFragmentMensajes,*/ listaFragmentCoches;
      SupportMapFragment mapFragment;
+     DatabaseHandler databaseHandler;
 
 
 
@@ -50,15 +54,15 @@ import java.util.Map;
         //DataHolder.instance.fireBaseAdmin.descargarYObservarRama("mensajes");
 
 
-        Log.v("SecondActivity","--------EMAAAIL: "+DataHolder.instance.fireBaseAdmin.user.getEmail());
+        //Log.v("SecondActivity","--------EMAAAIL: "+DataHolder.instance.fireBaseAdmin.user.getEmail());
 
         mapFragment.getMapAsync(events);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         //PARA QUE NOS SALGA PRIMERO EL LOGIN
-        transaction.hide(listaFragmentCoches);
-        transaction.show(mapFragment);
+        transaction.show(listaFragmentCoches);
+        transaction.hide(mapFragment);
         transaction.commit();
 
         /*HttpAsyncTask httpAsyncTask =new HttpAsyncTask();
@@ -70,6 +74,7 @@ import java.util.Map;
 
         /*HttpJsonAsyncTask httpJsonAsyncTask = new HttpJsonAsyncTask();
         httpJsonAsyncTask.execute("http://10.0.2.2/Javi/GOT/leePersonajes.php");*/
+        databaseHandler = new DatabaseHandler(this);
     }
 }
 
@@ -79,6 +84,7 @@ class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback,
      SecondActivity secondActivity;
     GoogleMap mMap;
     ArrayList<FBCoche> coches;
+    List<Cochesql> cocheList;
 
      public SecondActivityEvents(SecondActivity secondActivity){
          this.secondActivity=secondActivity;
@@ -118,12 +124,27 @@ class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback,
             coches=dataSnapshot.getValue(indicator);
             //VALUES NO ES UN ARRAY LIST ES UN COLLECTIONS
             Log.v("coches","COCHES CONTIENE: "+coches);
+            int cont = 0;
+            for (FBCoche coche: coches) {
+                Cochesql cocheaux = new Cochesql(cont,coche.Fabricado,coche.Marca,coche.Nombre,coche.lat,coche.lon);
+                this.secondActivity.databaseHandler.addContact(cocheaux);
+                cont++;
+            }
 
             //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
             ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(coches);
             secondActivity.listaFragmentCoches.recyclerView.setAdapter(listaCochesAdapter);
 
             agregarPinesCoches();
+
+            cocheList = secondActivity.databaseHandler.getAllContacts();
+
+            for (Cochesql coche: cocheList) {
+                Log.v("SQLDDBB","FABRICADO----->"+coche.getFabricado());
+                Log.v("SQLDDBB","MARCA----->"+coche.getMarca());
+                Log.v("SQLDDBB","NOMBRE----->"+coche.getNombre());
+            }
+
         }
 
 

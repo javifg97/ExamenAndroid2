@@ -1,28 +1,25 @@
-package com.example.guille.apptutorial.FBObjects;
-
-import com.google.android.gms.maps.model.Marker;
-import com.google.firebase.database.IgnoreExtraProperties;
+package com.example.guille.apptutorial.sqlLiteAdmin;
 
 /**
- * Created by guille on 18/12/17.
+ * Created by javier on 12/02/2018.
  */
-@IgnoreExtraProperties
-public class FBCoche {
 
-    //public int id;
+public class Cochesql {
+
+    public int id;
     public int Fabricado;
     public String Marca;
     public String Nombre;
     public double lat;
     public double lon;
 
-    public Marker marker=null;
 
-    public FBCoche(){
+
+    public Cochesql(){
 
     }
 
-    /*public FBCoche(int id, int Fabricado,String Marca,String Nombre,double lat,double lon){
+    public Cochesql(int id, int Fabricado,String Marca,String Nombre,double lat,double lon){
         this.id = id;
         this.Fabricado=Fabricado;
         this.Marca=Marca;
@@ -30,8 +27,8 @@ public class FBCoche {
         this.lat=lat;
         this.lon=lon;
 
-    }*/
-    public FBCoche(int Fabricado,String Marca,String Nombre,double lat,double lon){
+    }
+    public Cochesql(int Fabricado,String Marca,String Nombre,double lat,double lon){
         this.Fabricado=Fabricado;
         this.Marca=Marca;
         this.Nombre=Nombre;
@@ -39,7 +36,7 @@ public class FBCoche {
         this.lon=lon;
 
     }
-/*
+
     public int getId() {
         return id;
     }
@@ -87,12 +84,4 @@ public class FBCoche {
     public void setLon(double lon) {
         this.lon = lon;
     }
-*/
-    public void setMarker(Marker marker){
-        this.marker = marker;
-    }
-    public Marker getMarker(){
-        return marker;
-    }
 }
-
