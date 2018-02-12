@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -124,12 +125,15 @@ class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback,
             coches=dataSnapshot.getValue(indicator);
             //VALUES NO ES UN ARRAY LIST ES UN COLLECTIONS
             Log.v("coches","COCHES CONTIENE: "+coches);
+            FirebaseCrash.log("Rama descargada");
             int cont = 0;
             for (FBCoche coche: coches) {
                 Cochesql cocheaux = new Cochesql(cont,coche.Fabricado,coche.Marca,coche.Nombre,coche.lat,coche.lon);
                 this.secondActivity.databaseHandler.addContact(cocheaux);
                 cont++;
             }
+            FirebaseCrash.log("Tabla rellenada");
+
 
             //PARA TRANSFORMAR UN COLLECTION A UN ARRAY LIST HAY QUE HACER es new ArrayList<Mensaje>(msg.values())
             ListaCochesAdapter listaCochesAdapter=new ListaCochesAdapter(coches);
@@ -144,6 +148,7 @@ class SecondActivityEvents implements FireBaseAdminListener, OnMapReadyCallback,
                 Log.v("SQLDDBB","MARCA----->"+coche.getMarca());
                 Log.v("SQLDDBB","NOMBRE----->"+coche.getNombre());
             }
+            FirebaseCrash.log("Select ejecutado");
 
         }
 

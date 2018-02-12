@@ -13,6 +13,7 @@ import com.example.milib.LoginFragment;
 import com.example.milib.LoginFragmentListener;
 import com.example.milib.RegisterFragment;
 import com.example.milib.RegisterFragmentListener;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         //  SALTARSE LOGIN
         //DataHolder.instance.fireBaseAdmin.loginEmailPass("guille@guille.com","1234567890",this);
-
+        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+        FirebaseCrash.log("Activity created");
 
     }
 }
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         if(blOk){
             Log.v("registroOk","TODO CORRECTO"+blOk);
             //ESTA PARTE DE CODIGO LO QUE HARA ES INICIAR EL SEGUNDO ACTIVITY Y FINALIZAR EL MAIN
+            FirebaseCrash.log("LOGIN OK");
             Intent intent= new Intent(mainActivity,SecondActivity.class);
             mainActivity.startActivity(intent);
             mainActivity.finish();
