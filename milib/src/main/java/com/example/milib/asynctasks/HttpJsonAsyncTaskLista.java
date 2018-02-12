@@ -83,6 +83,8 @@ public class HttpJsonAsyncTaskLista extends AsyncTask<String,Integer,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        Log.v("HttpJsonAsyncTask","Antes");
+        Log.v("HttpJsonAsyncTask","respuesta:  "+ s);
         if (listener != null){
             listener.respuestaLista(s);
         }

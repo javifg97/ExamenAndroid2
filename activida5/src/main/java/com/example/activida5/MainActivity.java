@@ -41,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         tiempo.setListener(mainActivityEvents);
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        //PARA QUE NOS SALGA PRIMERO EL LOGIN
+        transaction.hide(lista);
+        transaction.show(tiempo);
+        transaction.commit();
 
 
 
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
 class MainActivityEvents implements TiempoListener, HttpJsonListener, HttpJsonListenerLista {
 
     MainActivity mainActivity;
+
+    ListaPersonajesAdapter listaPersonajesAdapter;
 
     public MainActivityEvents(MainActivity mainActivity){
 
@@ -81,17 +89,15 @@ class MainActivityEvents implements TiempoListener, HttpJsonListener, HttpJsonLi
     public void Lista() {
 
 
-        //
-        FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
+        Log.v("HttpJsonAsyncTask","PASE Lista");
 
-        transaction.hide(mainActivity.tiempo);
-        transaction.show(mainActivity.lista);
-        transaction.commit();
 
         HttpJsonAsyncTaskLista httpJsonAsyncTaskLista = new HttpJsonAsyncTaskLista();
         httpJsonAsyncTaskLista.setListener(this);
         //cambiar a personajes
         httpJsonAsyncTaskLista.execute("http://10.0.2.2/Javi/GOT/leePersonajes.php");
+
+
     }
 
     @Override
@@ -113,18 +119,24 @@ class MainActivityEvents implements TiempoListener, HttpJsonListener, HttpJsonLi
         }
     }
 
+
+
+
     @Override
     public void respuestaLista(String respuesta) {
         //Respuesta es un Json hay que acabar pasando un Array de personajes
         ArrayList array = new ArrayList<Personaje>();
         try {
             JSONObject jsonGeneral = new JSONObject(respuesta);
-
-            JSONArray personajes = new JSONArray(jsonGeneral.get("personajes"));
+            Log.v("HttpJsonAsyncTask","******:  "+ jsonGeneral.toString());
+            JSONArray personajes = (JSONArray)jsonGeneral.get("personajes");
+            Log.v("HttpJsonAsyncTask","******:  "+ personajes.toString());
 
             for (int i = 0; i<personajes.length();i++) {
 
                 JSONObject personaje = (JSONObject) personajes.get(i);
+
+                Log.v("HttpJsonAsyncTask","//////  "+ personaje.toString());
 
                 String Personaje = personaje.get("nombrePersonaje").toString();
                 String Actor = personaje.get("nombreActor").toString();
@@ -138,9 +150,16 @@ class MainActivityEvents implements TiempoListener, HttpJsonListener, HttpJsonLi
 
             }
 
+            Log.v("HttpJsonAsyncTask","$$$$$$"+ array.toString());
 
-            ListaPersonajesAdapter listaPersonajesAdapter=new ListaPersonajesAdapter(array);
+            listaPersonajesAdapter=new ListaPersonajesAdapter(array);
             mainActivity.lista.recyclerView.setAdapter(listaPersonajesAdapter);
+            FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
+
+            transaction.hide(mainActivity.tiempo);
+            transaction.show(mainActivity.lista);
+            transaction.commit();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
